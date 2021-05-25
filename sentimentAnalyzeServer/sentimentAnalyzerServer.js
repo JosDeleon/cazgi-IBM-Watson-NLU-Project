@@ -5,14 +5,14 @@ dotenv.config();
 
 NLU = getNLUInstance();
 
-app.use(express.static('client'))
+app.use(express.static('client'));
 
 const cors_app = require('cors');
 app.use(cors_app());
 
 app.get("/",(req,res)=>{
     res.render('index.html');
-  });
+});
 
 app.get("/url/emotion", (req,res) => {
     const params = {
@@ -108,9 +108,9 @@ function getNLUInstance(){
     const naturalLanguageUnderstarding = new NaturalLanguageUnderstardingV1 ({
         version : '2020-08-01',
         authenticator: new IamAuthenticator({
-            apikey: apikey,
+            apikey: api_key,
         }),
-        serviceUrl:api_url,
+        serviceUrl: api_url,
     });
 
     return naturalLanguageUnderstarding;
