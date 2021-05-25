@@ -2,6 +2,17 @@ import React from 'react';
 import './bootstrap.min.css';
 
 class EmotionTable extends React.Component {
+
+    dataTable(){
+        let dataJson = this.props.emotions
+        return Object.keys(dataJson).map( emot => {
+            return <tr>
+                        <td>{emot}</td>
+                        <td>{dataJson[emot]}</td>
+                    </tr>
+        });
+    }
+
     render() {
       return (  
         <div>
@@ -10,7 +21,7 @@ class EmotionTable extends React.Component {
           <table className="table table-bordered">
             <tbody>
             {
-                //Write code to use the .map method that you worked on in the Hands-on React lab to extract the emotions
+                this.dataTable()
             }
             </tbody>
           </table>

@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 const app = new express();
 dotenv.config();
 
+NLU = getNLUInstance();
+
 app.use(express.static('client'))
 
 const cors_app = require('cors');
@@ -13,20 +15,83 @@ app.get("/",(req,res)=>{
   });
 
 app.get("/url/emotion", (req,res) => {
+    const params = {
+        'url' : req.query.url,
+        'features' : {
+            'emotion' : {}
+        }
+    }
 
-    return res.send({"happy":"90","sad":"10"});
+    NLU.analyze(params)
+    .then(results =>{
+        emotion = results.result.emotion.document.emotion;
+        console.log(emotion);
+        return res.send(emotion);
+    })
+    .catch(error => {
+        console.log('Error: ', error);
+        return res.send("Processing Error");
+    });
 });
 
 app.get("/url/sentiment", (req,res) => {
-    return res.send("url sentiment for "+req.query.url);
+    const params = {
+        'url' : req.query.url,
+        'features' : {
+            'sentiment' : {}
+        }
+    }
+
+    NLU.analyze(params)
+    .then(results =>{
+        sentiments = results.result.sentiment.document.label;
+        console.log(sentiments);
+        return res.send(sentiments);
+    })
+    .catch(error => {
+        console.log('Error: ', error);
+        return res.send("Processing Error");
+    });
 });
 
 app.get("/text/emotion", (req,res) => {
-    return res.send({"happy":"10","sad":"90"});
+    const params = {
+        'text' : req.query.text,
+        'features' : {
+            'emotion' : {}
+        }
+    }
+
+    NLU.analyze(params)
+    .then(results =>{
+        emotion = results.result.emotion.document.emotion;
+        console.log(emotion);
+        return res.send(emotion);
+    })
+    .catch(error => {
+        console.log('Error: ', error);
+        return res.send("Processing Error");
+    });
 });
 
 app.get("/text/sentiment", (req,res) => {
-    return res.send("text sentiment for "+req.query.text);
+    const params = {
+        'text' : req.query.text,
+        'features' : {
+            'sentiment' : {}
+        }
+    }
+
+    NLU.analyze(params)
+    .then(results =>{
+        sentiments = results.result.sentiment.document.label;
+        console.log(sentiments);
+        return res.send(sentiments);
+    })
+    .catch(error => {
+        console.log('Error: ', error);
+        return res.send("Processing Error");
+    });
 });
 
 let server = app.listen(8080, () => {
